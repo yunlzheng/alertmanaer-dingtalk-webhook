@@ -7,18 +7,34 @@ import (
 	"net/http"
 
 	"github.com/yunlzheng/alertmanaer-dingtalk-webhook/model"
+	"github.com/yunlzheng/alertmanaer-dingtalk-webhook/transformer"
 )
 
 // Send send markdown message to dingtalk
-func Send(markdown *model.DingTalkMarkdown) (err error) {
+func Send(notification model.Notification, defaultRobot string) (err error) {
+
+	markdown, robotURL, err := transformer.TransformToMarkdown(notification)
+
+	if err != nil {
+		return
+	}
+
 	data, err := json.Marshal(markdown)
 	if err != nil {
 		return
 	}
 
+	var dingTalkRobotURL string
+
+	if robotURL != "" {
+		dingTalkRobotURL = robotURL
+	} else {
+		dingTalkRobotURL = defaultRobot
+	}
+
 	req, err := http.NewRequest(
 		"POST",
-		"https://oapi.dingtalk.com/robot/send?access_token=ea10c4648177dc44ec540a621a3e431518124880c98c491bc0469ea311242741",
+		dingTalkRobotURL,
 		bytes.NewBuffer(data))
 
 	if err != nil {
