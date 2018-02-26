@@ -15,7 +15,7 @@ func main() {
 		var notification model.Notification
 		if err := c.BindJSON(&notification); err == nil {
 
-			err, markdown := transformer.TransformToMarkdown(notification)
+			markdown, err := transformer.TransformToMarkdown(notification)
 			if err != nil {
 				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			}
