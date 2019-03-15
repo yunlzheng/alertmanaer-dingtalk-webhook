@@ -1,6 +1,6 @@
 ## Alertmanager Dingtalk Webhook
 
-Webhook service support send Prometheus 2.0 alert message to Dingtalk。
+Webhook service support send Prometheus 2.0 alert message to Dingtalk.
 
 ## How To Use
 
